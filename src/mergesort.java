@@ -1,34 +1,55 @@
+import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
+import java.util.Scanner;
 import java.util.Vector;
 /**
  * Created by sydneylo on 4/27/16.
  */
 public class mergesort {
     public static void main(String args[]) {
-        int k = 4; // temp value
-        int[] a = {5,3,2,4,-1, 100, 45, 45, 1000, -4532, 89, -56,-4532,-4532,-1,-1, 100000, -984683, 100, 100, 100};
-        //5,3,2,4,-1, 100, 45
+        // Command line arguments.
+        String fileName = args[0];
+
+        // Create a file object.
+        File f = new File(fileName);
+        Vector<Integer> data = new Vector<Integer>();
+
+        try {
+            Scanner sc = new Scanner(f);
+            while (sc.hasNextInt()) {
+                data.add(sc.nextInt());
+            }
+            sc.close();
+        } catch(IOException FileNotFoundException) {
+            System.out.println("Could not find the specified male image file. " +
+                    "Please use absolute paths. Make sure it is correct.");
+        }
+
+        System.out.println(fileName);
+//        int k = 10;
+//        int[] a = {5,3,2,10,-1,8,1,3,100,-1000,0,8,15,26,19,39,27,3};
         System.out.println("Before sort");
-        System.out.println(Arrays.toString(a));
+        System.out.println(data.toString());
         System.out.println("After sort");
-        mergesort(a, 0, 20);
-        System.out.println(Arrays.toString(a));
+        mergesort(data, 0, data.size() - 1);
+        System.out.println(data.toString());
     }
 
-    public static void insertionsort(int[] a, int start, int end) {
+    public static void insertionsort(Vector<Integer> a, int start, int end) {
         int temp = 0;
         for (int i = start+1; i <= end; i++) {
             int j = i;
-            while (j > start && (a[j-1] > a[j])) {
-                temp = a[j-1];
-                a[j-1] = a[j];
-                a[j] = temp;
+            while (j > start && (a.get(j-1) > a.get(j))) {
+                temp = a.get(j-1);
+                a.set(j-1, a.get(j));
+                a.set(j, temp);
                 j--;
             }
         }
     }
 
-    public static void mergesort(int[] a, int lo, int hi) {
+    public static void mergesort(Vector<Integer> a, int lo, int hi) {
         // base case
         if ((hi-lo + 1) < 3)  {
             insertionsort(a, lo, hi);
@@ -70,15 +91,15 @@ public class mergesort {
         Vector<Integer> d = new Vector<Integer>();
 
         for (int k = low0; k <= hi0; k++) {
-            b.add(k-low0, a[k]);
+            b.add(k-low0, a.get(k));
         }
 
         for (int k = low1; k <= hi1; k++) {
-            c.add(k-low1, a[k]);
+            c.add(k-low1, a.get(k));
         }
 
         for (int k = low2; k <= hi2; k++) {
-            d.add(k-low2, a[k]);
+            d.add(k-low2, a.get(k));
         }
 
         // sentinel values
@@ -91,13 +112,13 @@ public class mergesort {
         for (int k = lo; k <= hi; k++) {
             // smallest value is in the b vector.
             if (b.get(i) <= c.get(j) && b.get(i) <= d.get(l)) {
-                a[k] = b.get(i++);
+                a.set(k, b.get(i++));
             } else if (c.get(j) <= b.get(i) && c.get(j) <= d.get(l)) {
                 // smallest value is in the c vector.
-                a[k] = c.get(j++);
+                a.set(k, c.get(j++));
             } else if (d.get(l) <= b.get(i) && d.get(l) <= c.get(j)) {
                 // smallest value is in the d vector
-                a[k] = d.get(l++);
+                a.set(k, d.get(l++));
             }
         }
     }
