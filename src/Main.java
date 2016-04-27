@@ -1,25 +1,44 @@
 import java.util.Arrays;
+import java.util.Vector;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Main {
 
     public static void main(String[] args) {
+        int k = 4; // temp value
         int[] a = {5,3,2,10,-1,8,1,3,100,-1000,0,8,15,26,19,39,27,3};
         System.out.println("Before sort");
         System.out.println(Arrays.toString(a));
         System.out.println("After sort");
-        quicksort(a, 0, 17);
+        quicksort(a, 0, 17, k);
         System.out.println(Arrays.toString(a));
 
     }
 
-    public static void quicksort(int[] a, int lo, int hi) {
+    public static void insertionsort(int[] a, int start, int end) {
+        int temp = 0;
+        for (int i = start+1; i <= end; i++) {
+            int j = i;
+            while (j > 0 && (a[j-1] > a[j])) {
+                temp = a[j-1];
+                a[j-1] = a[j];
+                a[j] = temp;
+                j--;
+            }
+        }
+    }
 
-        // TODO: Need to change this base case to check for the array size and if it is <= to K perform insertion sort.
-        if (hi <= lo) {
+    public static void quicksort(int[] a, int lo, int hi, int k) {
+
+        if (((hi - lo) + 1) <= k) {
+            insertionsort(a, lo, hi);
             return;
         }
+
+//        if (hi <= lo) {
+//            return;
+//        }
 
         // i holds the index before the first element in the array.
         // j holds the index of the last element in the array.
@@ -64,7 +83,7 @@ public class Main {
         a[i] = a[hi];
         a[hi] = t;
 
-        quicksort(a, lo, i-1);
-        quicksort(a, i+1, hi);
+        quicksort(a, lo, i-1, k);
+        quicksort(a, i+1, hi, k);
     }
 }
