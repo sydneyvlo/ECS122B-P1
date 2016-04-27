@@ -21,6 +21,9 @@ import java.util.Random;
  * Created by sydneylo on 4/27/16.
  */
 public class quicksort_stats {
+    public static int partitioning_stages = 0;
+    public static int exchanges = 0;
+    public static int compares = 0;
 
     public static void main(String[] args) {
         // Command line arguments.
@@ -52,17 +55,24 @@ public class quicksort_stats {
         quicksort(data, 0, data.size()-1, k);
 //        System.out.println(data.toString());
 
-        for (int i = 0; i < data.size(); i++) {
-            System.out.println(data.get(i));
-        }
+//        for (int i = 0; i < data.size(); i++) {
+//            System.out.println(data.get(i));
+//        }
+
+        System.out.println("Partitioning Stages: " + quicksort_stats.partitioning_stages);
+        System.out.println("Exchanges: " + quicksort_stats.exchanges);
+        System.out.println("Compares: " + quicksort_stats.compares);
 
     }
 
     public static void insertionsort(Vector<Integer> a, int start, int end) {
         int temp = 0;
         for (int i = start+1; i <= end; i++) {
+            quicksort_stats.compares++;
             int j = i;
             while (j > start && (a.get(j-1) > a.get(j))) {
+                quicksort_stats.compares++;
+                quicksort_stats.exchanges++;
                 temp = a.get(j-1);
                 a.set(j-1, a.get(j));
                 a.set(j, temp);
@@ -74,6 +84,7 @@ public class quicksort_stats {
     public static void quicksort(Vector<Integer> a, int lo, int hi, int k) {
 
         if (((hi - lo) + 1) <= k) {
+            quicksort_stats.compares++;
             insertionsort(a, lo, hi);
             return;
         }
@@ -92,20 +103,23 @@ public class quicksort_stats {
         int pivotIndex = ThreadLocalRandom.current().nextInt(lo, (hi+1));
         int t, v = a.get(pivotIndex);
 
-        // Swap pivot with last time
+        // Swap pivot with last item
         a.set(pivotIndex, a.get(hi));
+        quicksort_stats.exchanges++;
         a.set(hi, v);
 
         // This is the partitioning step.
         while (true) {
+            quicksort_stats.partitioning_stages++;
             // Compare the elements from the left to the last element.
             // Keep incrementing as long as these elements are less than the last element.
-            while (a.get(++i) < v);
+            while (a.get(++i) < v) {quicksort_stats.compares++;};
 
             // Compare the elements starting from the right hand side.
             // Keep decrementing as long as the elements on the right hand side are greater than
             // the last element.
             while (v < a.get(--j)) {
+                quicksort_stats.compares++;
                 if (j == lo) {
                     break;
                 }
@@ -113,14 +127,17 @@ public class quicksort_stats {
 
             // Checks to see that the i and j indices crossed.
             if (i >= j) {
+                quicksort_stats.compares++;
                 break;
             }
 
+            quicksort_stats.exchanges++;
             t = a.get(i);
             a.set(i, a.get(j));
             a.set(j, t);
         }
 
+        quicksort_stats.exchanges++;
         t = a.get(i);
         a.set(i, a.get(hi));
         a.set(hi, t);
