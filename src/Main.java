@@ -2,11 +2,41 @@ import java.util.Arrays;
 import java.util.Vector;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
+import java.io.FileNotFoundException;
+import java.util.Vector;
+import java.io.File;
+import java.util.Scanner;
+import java.io.IOException;
+import java.io.FileReader;
+import java.util.ArrayList;
+import java.lang.Math;
+import java.util.Random;
 
 public class Main {
 
     public static void main(String[] args) {
-        int k = 4; // temp value
+        // Command line arguments.
+        String fileName = args[0];
+        int k = Integer.parseInt(args[1]);
+
+        // Create a file object.
+        File f = new File(fileName);
+        Vector<Integer> data = new Vector<Integer>();
+
+        try {
+            Scanner sc = new Scanner(f);
+            while (sc.hasNextInt()) {
+                data.add(sc.nextInt());
+            }
+            sc.close();
+        } catch(IOException FileNotFoundException) {
+            System.out.println("Could not find the specified male image file. " +
+                    "Please use absolute paths. Make sure it is correct.");
+        }
+
+        System.out.println(fileName);
+        System.out.println(k);
+//        int k = 10;
         int[] a = {5,3,2,10,-1,8,1,3,100,-1000,0,8,15,26,19,39,27,3};
         System.out.println("Before sort");
         System.out.println(Arrays.toString(a));
@@ -20,7 +50,7 @@ public class Main {
         int temp = 0;
         for (int i = start+1; i <= end; i++) {
             int j = i;
-            while (j > 0 && (a[j-1] > a[j])) {
+            while (j > start && (a[j-1] > a[j])) {
                 temp = a[j-1];
                 a[j-1] = a[j];
                 a[j] = temp;
