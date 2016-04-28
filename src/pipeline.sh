@@ -34,6 +34,7 @@ for (( numTest=1; numTest<=$2; numTest++))
 		exec 3>&- 4>&-
 		real=${foo#*real}
 		real=${real%%s*}
+		real=$(echo "$real" | tr -dc '0-9.0-9')
 
 		# Run the sort algorithm and store it in variables
 		if [[ "$1" == "quicksort" ]]; then
@@ -47,7 +48,17 @@ for (( numTest=1; numTest<=$2; numTest++))
 			echo "$numTest","$version","$real","$NumPartition","$NumExchanges","$NumCompares" >> quicksort.csv
 		else
 			# Run mergesort.
-			output="$(java mergesort_stats "test$numTest.txt" "$k")"
+			output="$(java mergesort_stats "test$numTest.txt")"
+			# echo "$output"
+
+			# Extracting out the numbers from the mergesort_stats output.
+			NumRecursive="$(echo $output | cut -d ':' -f 2 | tr -dc '0-9')"
+			NumTransitions="$(echo $output | cut -d ':' -f 3 | tr -dc '0-9')"
+			NumCompares="$(echo $output | cut -d ':' -f 4 | tr -dc '0-9')"
+			# echo "$NumRecursive"
+			# echo "$NumTransitions"
+			# echo "$NumCompares"
+			echo "$numTest","$version","$real","$NumRecursive","$NumTransitions","$NumCompares" >> mergesort.csv
 		fi
 	done
 
