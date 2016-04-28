@@ -23,7 +23,7 @@ k="10"
 # Generate the testing sample
 for (( numTest=1; numTest<=$2; numTest++))
 	do
-		for (( c=1; c<=$3; c++ ))
+		for (( c=1; c<=$numTest; c++ ))
 			do
 			    echo $RANDOM >> "test$numTest.txt"
 			done
