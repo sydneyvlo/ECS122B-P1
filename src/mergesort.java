@@ -27,13 +27,7 @@ public class mergesort {
         }
 
         System.out.println(fileName);
-//        int k = 10;
-//        int[] a = {5,3,2,10,-1,8,1,3,100,-1000,0,8,15,26,19,39,27,3};
-        System.out.println("Before sort");
-        System.out.println(data.toString());
-        System.out.println("After sort");
         mergesort(data, 0, data.size() - 1);
-        System.out.println(data.toString());
     }
 
     public static void insertionsort(Vector<Integer> a, int start, int end) {
