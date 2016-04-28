@@ -9,10 +9,10 @@ fi
 
 if [[ "$1" == "quicksort" ]]; then
 	# Quicksort header file
-	echo '"Sample Number","Language","Time","Number of Partitioning Stages","Number of Exchanges","Number of Compares"' >> quicksort.csv
+	echo '"Sample Number","Language","Time","Number of Partitioning Stages","Number of Exchanges","Number of Compares"' > quicksort.csv
 else 
 	#Mergesort header file
-	echo '"Sample Number","Language","Time","Number of Recursive Calls","Number of Transitions","Number of Compares"' >> mergesort.csv
+	echo '"Sample Number","Language","Time","Number of Recursive Calls","Number of Transitions","Number of Compares"' > mergesort.csv
 fi
 
 version="java 1.8.0_25"
@@ -61,4 +61,7 @@ for (( numTest=1; numTest<=$2; numTest++))
 			echo "$numTest","$version","$real","$NumRecursive","$NumTransitions","$NumCompares" >> mergesort.csv
 		fi
 	done
+
+# Clean up
+rm *.txt
 
