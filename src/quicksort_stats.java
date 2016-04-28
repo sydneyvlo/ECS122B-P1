@@ -68,7 +68,6 @@ public class quicksort_stats {
     public static void insertionsort(Vector<Integer> a, int start, int end) {
         int temp = 0;
         for (int i = start+1; i <= end; i++) {
-            quicksort_stats.compares++;
             int j = i;
             while (j > start && (a.get(j-1) > a.get(j))) {
                 quicksort_stats.compares++;
@@ -84,7 +83,6 @@ public class quicksort_stats {
     public static void quicksort(Vector<Integer> a, int lo, int hi, int k) {
 
         if (((hi - lo) + 1) <= k) {
-            quicksort_stats.compares++;
             insertionsort(a, lo, hi);
             return;
         }
@@ -127,7 +125,6 @@ public class quicksort_stats {
 
             // Checks to see that the i and j indices crossed.
             if (i >= j) {
-                quicksort_stats.compares++;
                 break;
             }
 
